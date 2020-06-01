@@ -98,6 +98,41 @@ public class ActionConfig extends BaseConfig {
      */
     protected boolean cancellable = false;
 
+    
+    /*  FCE-35385
+     *  @source: https://github.com/kawasima/struts1-forever/pull/1/commits/3fb0bf8e4b5d49e4611a2e1203c2ffd7418f8b41
+     */
+    
+	// 2014/07/02 - security problem patch.
+    // Author: NTT DATA Corporation
+    /**
+     * Accepted page value for multi-page validation.<br>
+     * If two or more page values are accepted, then acceptPage is set minimum of them.<br>
+     * If multi-page validation is not use, acceptPage is not set. Then multi-page validation is disabled.
+     * @since Struts 1.2.9-sp2
+     */
+    protected Integer acceptPage = null;
+
+    /**
+     * Returns accepted page value for multi-page validation.
+     *
+     * @return Accepted page value for multi-page validation
+     * @since  Struts 1.2.9-sp2
+     */
+    public Integer getAcceptPage() {
+        return acceptPage;
+    }
+
+    /**
+     * Set accepted page value for multi-page validation.
+     *
+     * @param acceptPage Accepted page value for multi-page validation
+     * @since  Struts 1.2.9-sp2
+     */
+    public void setAcceptPage(Integer acceptPage) {
+        this.acceptPage = acceptPage;
+    }    
+    
     /**
      * <p> Have the inheritance values for this class been applied?</p>
      */
@@ -1369,6 +1404,15 @@ public class ActionConfig extends BaseConfig {
         sb.append("cancellable=");
         sb.append(cancellable);
 
+        /*  FCE-35385
+         *  @source: https://github.com/kawasima/struts1-forever/pull/1/commits/3fb0bf8e4b5d49e4611a2e1203c2ffd7418f8b41
+         */
+        
+    	// 2014/07/02 - security problem patch.
+        // Author: NTT DATA Corporation
+        sb.append(",acceptPage=");
+        sb.append(acceptPage);
+        
         sb.append(",path=");
         sb.append(path);
 

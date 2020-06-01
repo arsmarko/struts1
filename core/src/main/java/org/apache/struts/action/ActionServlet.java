@@ -20,9 +20,11 @@
  */
 package org.apache.struts.action;
 
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.beanutils.SuppressPropertiesBeanIntrospector;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
 import org.apache.commons.beanutils.converters.BigIntegerConverter;
 import org.apache.commons.beanutils.converters.BooleanConverter;
@@ -72,11 +74,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.MissingResourceException;
+import java.util.*;
 
 /**
  * <p><strong>ActionServlet</strong> provides the "controller" in the
@@ -1752,6 +1750,22 @@ public class ActionServlet extends HttpServlet {
      */
     protected void initOther()
         throws ServletException {
+    	
+    	/*
+    	 * FCE-35385
+    	 * @source: https://github.com/kawasima/struts1-forever/commit/212bb0f7c57617b7b9c44cb1e056bd1e597c8e16
+    	 * @source: https://github.com/kawasima/struts1-forever/commit/eda3a79907ed8fcb0387a0496d0cb14332f250e8
+    	 */
+    	HashSet suppressProperties = new HashSet();
+        suppressProperties.add("class");
+        suppressProperties.add("multipartRequestHandler");
+        suppressProperties.add("resultValueMap");
+        
+        PropertyUtils.addBeanIntrospector(
+                new SuppressPropertiesBeanIntrospector(suppressProperties));
+        PropertyUtils.clearDescriptors();
+        
+        
         String value;
 
         value = getServletConfig().getInitParameter("config");

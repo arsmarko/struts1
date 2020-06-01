@@ -461,6 +461,19 @@ public class RequestUtils {
             } else {
                 parameterValue = request.getParameterValues(name);
             }
+            
+            /*  FCE-35385
+             *  @source: https://github.com/kawasima/struts1-forever/pull/1/commits/3fb0bf8e4b5d49e4611a2e1203c2ffd7418f8b41
+             */
+            
+    		// 2014/05/13 - CVE-2014-0114 security problem patch.
+            // Author: NTT DATA Corporation
+            if (stripped.startsWith("class.") || stripped.indexOf(".class.") >= 0) {
+                // this log output is only for detection of invalid parameters and not an integral part of the bug fix
+                log.info("ignore parameter: paramName=" + stripped);
+                continue;
+            }
+            
 
             // Populate parameters, except "standard" struts attributes
             // such as 'org.apache.struts.action.CANCEL'
